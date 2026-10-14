@@ -1,0 +1,1 @@
+Place student project images here. Names must be lowercase with underscores between every name part, e.g. ahyan_arsalan.jpg or shrenik_subbaiyan_thiruchenduran.png. Supported: jpg, jpeg, png, webp, avif. Recommended shape: landscape 3:2. See ../README.md for details.

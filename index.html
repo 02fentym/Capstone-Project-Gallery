@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore student capstone projects in design, technology, and creative media.">
+  <meta name="theme-color" content="#0c0e0d">
+  <title>Capstone Gallery · Ideas into action</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="./" aria-label="Capstone Gallery home"><span class="brand-mark" aria-hidden="true">c<span>g</span></span>CAPSTONE GALLERY</a><a class="nav-link" href="#projects">Explore projects <span aria-hidden="true">↗</span></a></header>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy"><p class="eyebrow"><span class="dot"></span> STUDENT CAPSTONE COLLECTION</p><h1 id="hero-title">A space for <em>big ideas.</em></h1><p class="hero-description">Discover what happens when curiosity meets creativity.<br>Explore the projects, and the students behind them.</p></div>
+    </section>
+    <section class="collection" id="projects" aria-labelledby="collection-title">
+      <div class="collection-heading"><h2 id="collection-title">Explore the collection</h2><p>Choose a project to take a closer look <span aria-hidden="true">↗</span></p></div>
+      <div class="toolbar"><label class="search"><span aria-hidden="true">⌕</span><span class="sr-only">Search projects</span><input id="search" type="search" placeholder="Search projects, students, or ideas…" autocomplete="off"></label><label class="sort"><span>Sort by</span><select id="sort"><option value="sheet">Sheet order</option><option value="title">Project A–Z</option><option value="student">Student A–Z</option></select></label></div>
+      <div id="filters" class="filters" role="group" aria-label="Filter by ICT area"></div>
+      <div class="results-bar"><p id="result-count" role="status" aria-live="polite">Connecting to the collection…</p><button id="reset" class="text-button" hidden>Clear filters ↗</button></div>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <div id="gallery" class="gallery" aria-busy="true"></div>
+      <div id="empty" class="empty" hidden><span aria-hidden="true">↗</span><h3>No projects found</h3><p>Try a different search or explore another area.</p><button id="empty-reset" class="primary-link">Show all projects</button></div>
+    </section>
+  </main>
+  <footer><a class="brand" href="./">CAPSTONE GALLERY</a><p>Student ideas. Endless possibilities.</p><a href="#hero-title">Back to top ↑</a></footer>
+  <dialog id="project-dialog" aria-labelledby="detail-title"><div class="dialog-bar"><span class="eyebrow">PROJECT SPOTLIGHT</span><button id="close-dialog" aria-label="Close project details">✕</button></div><div id="detail-content"></div></dialog>
+</body>
+</html>
