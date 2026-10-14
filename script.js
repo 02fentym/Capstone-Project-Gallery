@@ -32,6 +32,16 @@ function imageBasename(first, last) {
     .replace(/\p{M}/gu, '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '_').replace(/^_+|_+$/g, '');
 }
 
+function projectStatus(value) {
+  const statuses = {
+    'approved': { key: 'approved', label: 'Approved' },
+    'needs revision': { key: 'needs-revision', label: 'Needs revision' },
+    'not approved': { key: 'not-approved', label: 'Not approved' },
+  };
+  const key = String(value || '').trim().toLowerCase();
+  return Object.hasOwn(statuses, key) ? statuses[key] : { key: 'awaiting-review', label: 'Awaiting review' };
+}
+
 function projectsFromRows(rows) {
   if (!rows.length) throw new Error('The sheet is empty.');
   const headers = rows[0].map(value => value.trim().toLowerCase());
@@ -41,10 +51,11 @@ function projectsFromRows(rows) {
   // An explicit allowlist keeps email addresses and internal fields out of the UI.
   const publicFields = ['First Name', 'Last Name', 'Project Title', 'Project Idea', 'ICT Area(s)',
     'The Problem', 'Target Audience', 'User Need', 'User Experience', 'Minimum Version',
-    'Inspiration', 'Existing Skills', 'New Skills', 'Tools', 'Testing', 'Success'];
+    'Inspiration', 'Existing Skills', 'New Skills', 'Tools', 'Testing', 'Success', 'Status'];
   return rows.slice(1).map((cells, index) => {
     const project = { index };
     for (const key of publicFields) project[key] = (cells[headers.indexOf(key.toLowerCase())] || '').trim();
+    project.status = projectStatus(project.Status);
     project.name = [project['First Name'], project['Last Name']].filter(Boolean).join(' ');
     project.basename = imageBasename(project['First Name'], project['Last Name']);
     project.areas = [...new Set(project['ICT Area(s)'].split(/[,;\n]/).map(value => value.trim()).filter(Boolean))];
@@ -61,6 +72,7 @@ function element(tag, className, text) {
 
 function projectVisual(project) {
   const visual = element('div', 'project-visual');
+  visual.dataset.status = project.status.key;
   const palette = ['#202d32', '#28352a', '#383024', '#2d2937', '#233430'];
   visual.style.setProperty('--visual-bg', palette[project.index % palette.length]);
   const initials = project.name.split(/\s+/).map(part => Array.from(part)[0]).slice(0, 2).join('');
@@ -77,6 +89,12 @@ function projectVisual(project) {
   function tryNext() { img.src = `${GALLERY_CONFIG.imageDirectory}${encodeURIComponent(project.basename)}.${GALLERY_CONFIG.imageExtensions[attempt++]}`; }
   if (project.basename) tryNext();
   return visual;
+}
+
+function statusBadge(project) {
+  const badge = element('span', 'status-badge', project.status.label);
+  badge.dataset.status = project.status.key;
+  return badge;
 }
 
 function tags(project, limit = project.areas.length) {
@@ -99,7 +117,7 @@ function initializeGallery() {
     const content = document.querySelector('#detail-content'); content.replaceChildren();
     content.append(projectVisual(project));
     const title = element('h2', '', project['Project Title']); title.id = 'detail-title';
-    content.append(title, element('p', 'student', `A project by ${project.name}`), tags(project));
+    content.append(title, element('p', 'student', `A project by ${project.name}`), statusBadge(project), tags(project));
     const sections = [['Project Idea', 'The idea'], ['The Problem', 'The problem'], ['Target Audience', 'Who it’s for'],
       ['User Need', 'The user need'], ['User Experience', 'The experience'], ['Minimum Version', 'The first version'],
       ['Inspiration', 'Inspiration'], ['Existing Skills', 'Skills so far'], ['New Skills', 'Skills to explore'],
@@ -128,7 +146,7 @@ function initializeGallery() {
     gallery.replaceChildren();
     for (const project of visible) {
       const card = element('article', 'project'); const body = element('div', 'project-body');
-      body.append(element('p', 'student', project.name), element('h3', '', project['Project Title']),
+      body.append(element('p', 'student', project.name), element('h3', '', project['Project Title']), statusBadge(project),
         element('p', 'description', project['Project Idea'] || 'Explore this student’s capstone project.'), tags(project, 2));
       const button = element('button', 'project-open');
       const label = element('span', 'sr-only', 'View project details'); button.append(label);
@@ -176,4 +194,4 @@ function initializeGallery() {
   load();
 }
 if (typeof document !== 'undefined') initializeGallery();
-if (typeof module !== 'undefined') module.exports = { parseCSV, imageBasename, projectsFromRows };
+if (typeof module !== 'undefined') module.exports = { parseCSV, imageBasename, projectsFromRows, projectStatus };
