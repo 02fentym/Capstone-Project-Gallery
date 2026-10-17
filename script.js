@@ -35,6 +35,7 @@ function imageBasename(first, last) {
 function projectStatus(value) {
   const statuses = {
     'approved': { key: 'approved', label: 'Approved' },
+    'approved with conditions': { key: 'approved-with-conditions', label: 'Approved with conditions' },
     'needs revision': { key: 'needs-revision', label: 'Needs revision' },
     'not approved': { key: 'not-approved', label: 'Not approved' },
   };

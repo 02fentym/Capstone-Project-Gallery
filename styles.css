@@ -12,3 +12,6 @@
 .status-badge[data-status="not-approved"]{color:#f59a9a;background:#ed777710;border-color:#ed777755}
 dialog .status-badge{font-size:11px;margin-bottom:15px}
 @media(max-width:480px){.status-badge{font-size:8px;padding:3px 6px}}
+
+.project-visual[data-status="approved-with-conditions"]{border:3px solid #7aafff}
+.status-badge[data-status="approved-with-conditions"]{color:#a8cbff;background:#7aafff10;border-color:#7aafff55}

@@ -70,14 +70,16 @@ Dark image gallery with four columns on wide screens, three on medium screens, a
 
 ## Project approval status
 
-Set each review decision in **Form Responses 1 → Status (column AA)** using the existing dropdown: **Approved**, **Needs Revision**, or **Not Approved**. The source and public status cells use green, yellow, and red formatting. Do not enter review decisions into Public Gallery column Q; it mirrors the source automatically.
+Set each review decision in **Form Responses 1 → Status (column AA)** using the existing dropdown: **Approved**, **Approved With Conditions**, **Needs Revision**, or **Not Approved**. The source and public status cells use green, yellow, and red formatting. Do not enter review decisions into Public Gallery column Q; it mirrors the source automatically.
 
-The gallery reads the public **Status** header, outlines each project image green/yellow/red, and displays a matching text label on the card and modal. Blank, unrecognized, or missing statuses display **Awaiting review** with the neutral image border. All projects remain visible regardless of status. Values are matched without case sensitivity and with surrounding spaces ignored.
+The gallery reads the public **Status** header, outlines each project image green/blue/yellow/red, and displays a matching text label on the card and modal. Blank, unrecognized, or missing statuses display **Awaiting review** with the neutral image border. All projects remain visible regardless of status. Values are matched without case sensitivity and with surrounding spaces ignored.
 
 Public Gallery!Q1 contains this formula, which publishes only recognized status choices:
 
 ```
-={"Status";ARRAYFORMULA(IF(REGEXMATCH(LOWER(TRIM('Form Responses 1'!AA2:AA)), "^(approved|needs revision|not approved)$"),'Form Responses 1'!AA2:AA,""))}
+={"Status";ARRAYFORMULA(IF(REGEXMATCH(LOWER(TRIM('Form Responses 1'!AA2:AA)), "^(approved|approved with conditions|needs revision|not approved)$"),'Form Responses 1'!AA2:AA,""))}
 ```
 
 Keep automatic republishing enabled. Changes appear after Google's published CSV refreshes and visitors reload the gallery; they do not require a GitHub commit.
+
+**Approved With Conditions** uses a blue image outline and matching text label on project cards and modals. The published Status formula accepts all four options.
